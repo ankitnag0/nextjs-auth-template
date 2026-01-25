@@ -23,8 +23,15 @@ Complete guide to using the Next.js Auth Template in your projects.
 git clone <your-repo-url> my-app
 cd my-app
 
+# Remove template's git history and start fresh
+rm -rf .git
+git init
+git add .
+git commit -m "Initial commit from Next.js Auth Template"
+
 # Option B: Use as GitHub template
 # Click "Use this template" on GitHub
+# This automatically creates a new repo without template history
 ```
 
 ### 2. Install Dependencies

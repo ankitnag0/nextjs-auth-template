@@ -141,9 +141,15 @@ src/
 git clone <your-repo-url> my-new-app
 cd my-new-app
 
-# Remove git history (optional)
+# Remove template's git history and start fresh
 rm -rf .git
 git init
+git add .
+git commit -m "Initial commit from Next.js Auth Template"
+
+# Connect to your own repo (optional)
+git remote add origin <your-new-repo-url>
+git push -u origin main
 ```
 
 ### 2. Update Project Name
