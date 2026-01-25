@@ -1,36 +1,243 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Auth Template
 
-## Getting Started
+Production-ready authentication template for Next.js applications with Better Auth, Drizzle ORM, and shadcn/ui components.
 
-First, run the development server:
+## ⚠️ Package Manager: Bun Only
+
+**This project uses [Bun](https://bun.sh) exclusively.** Do NOT use npm, yarn, or pnpm.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+# Install bun if you haven't
+curl -fsSL https://bun.sh/install | bash
+
+# Install dependencies
+bun install
+
+# Run development server
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 🔐 **Authentication** - Email/password auth with [Better Auth](https://www.better-auth.com/)
+- 🗄️ **Database** - [Drizzle ORM](https://orm.drizzle.team/) with libsql/Turso support
+- 🎨 **UI Components** - [shadcn/ui](https://ui.shadcn.com/) with Tailwind CSS v4
+- 🌗 **Dark Mode** - Built-in light/dark theme support
+- 🔒 **Protected Routes** - Session-based route protection
+- 👁️ **Password Toggle** - Show/hide password functionality
+- ✨ **Type-Safe** - Full TypeScript support
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Auth**: Better Auth v1.4
+- **Database**: Drizzle ORM + libsql (SQLite)
+- **UI**: shadcn/ui + Tailwind CSS v4
+- **Runtime**: Bun
+- **Language**: TypeScript
 
-To learn more about Next.js, take a look at the following resources:
+## Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerequisites
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Bun](https://bun.sh) installed
+- Node.js 20+ (for compatibility)
 
-## Deploy on Vercel
+### Installation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+# Clone the template
+git clone <your-repo-url>
+cd nextjs-auth-template
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Install dependencies (bun only!)
+bun install
+
+# Run development server
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) - you'll be redirected to `/signin`.
+
+### Database Setup
+
+The template uses a local SQLite database (`local.db`) by default.
+
+```bash
+# Generate migrations
+bun db:generate
+
+# Push schema to database
+bun db:push
+
+# Open Drizzle Studio (database GUI)
+bun db:studio
+```
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/auth/[...all]/     # Better Auth API routes
+│   ├── signin/                 # Sign in page
+│   ├── signup/                 # Sign up page
+│   └── page.tsx                # Protected home page
+├── components/
+│   ├── ui/                     # shadcn/ui components
+│   ├── login-form.tsx          # Login form component
+│   ├── signup-form.tsx         # Signup form component
+│   └── logout-button.tsx       # Logout button
+├── db/
+│   ├── schema/                 # Database schemas
+│   └── index.ts                # Database client
+└── lib/
+    ├── auth.ts                 # Better Auth server config
+    ├── auth-client.ts          # Better Auth client
+    └── utils.ts                # Utilities
+```
+
+## Creating Your Own App from This Template
+
+### 1. Clone and Rename
+
+```bash
+# Clone the template
+git clone <your-repo-url> my-new-app
+cd my-new-app
+
+# Remove git history (optional)
+rm -rf .git
+git init
+```
+
+### 2. Update Project Name
+
+**package.json**:
+```json
+{
+  "name": "my-new-app",
+  "version": "0.1.0"
+}
+```
+
+**src/app/layout.tsx**:
+```tsx
+export const metadata: Metadata = {
+  title: "My New App",
+  description: "Description of my new app",
+};
+```
+
+### 3. Configure Database (Optional)
+
+To use Turso instead of local SQLite:
+
+```bash
+# Install Turso CLI
+curl -sSfL https://get.tur.so/install.sh | bash
+
+# Create database
+turso db create my-app-db
+
+# Get connection URL and auth token
+turso db show my-app-db
+```
+
+Update `drizzle.config.ts`:
+```ts
+export default defineConfig({
+  dialect: "turso",
+  dbCredentials: {
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
+  },
+  // ...
+});
+```
+
+Create `.env`:
+```env
+TURSO_DATABASE_URL=libsql://your-db.turso.io
+TURSO_AUTH_TOKEN=your-token
+```
+
+### 4. Install and Run
+
+```bash
+# Install dependencies
+bun install
+
+# Push database schema
+bun db:push
+
+# Run dev server
+bun dev
+```
+
+## Available Scripts
+
+```bash
+bun dev          # Start development server
+bun build        # Build for production
+bun start        # Start production server
+bun lint         # Run ESLint
+
+bun db:generate  # Generate migrations
+bun db:push      # Push schema to database
+bun db:migrate   # Run migrations
+bun db:studio    # Open Drizzle Studio
+```
+
+## Adding More Auth Providers
+
+The template is ready for additional providers. To add Google OAuth:
+
+1. Get OAuth credentials from [Google Cloud Console](https://console.cloud.google.com/)
+2. Update `src/lib/auth.ts` with Google provider config
+3. Add environment variables
+4. Update login/signup forms with Google button
+
+## Customization
+
+### Adding Components
+
+```bash
+# Use shadcn CLI to add more components
+bunx shadcn@latest add [component-name]
+```
+
+### Extending Database Schema
+
+1. Add/modify schemas in `src/db/schema/`
+2. Generate migration: `bun db:generate`
+3. Apply changes: `bun db:push`
+
+## Deployment
+
+### Vercel (Recommended)
+
+```bash
+# Install Vercel CLI
+bun add -g vercel
+
+# Deploy
+vercel
+```
+
+### Other Platforms
+
+This template works on any platform supporting Next.js and Bun:
+- Vercel
+- Netlify
+- Railway
+- Fly.io
+- Self-hosted
+
+## Contributing
+
+This is a template project. Fork it and make it your own!
+
+## License
+
+MIT
