@@ -14,6 +14,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { admin } from "better-auth/plugins";
 import { db } from "@/db";
 import { user, session, account, verification } from "@/db/schema/auth-schema";
 
@@ -44,6 +45,14 @@ export const auth = betterAuth({
             verification,   // Email verification tokens
         },
     }),
-    // Next.js cookie plugin for secure session management
-    plugins: [nextCookies()] 
+    // Plugins
+    plugins: [
+        // Admin plugin for user management
+        admin({
+            defaultRole: "user",
+            adminUserIds: process.env.ADMIN_USER_IDS?.split(",") || [],
+        }),
+        // Next.js cookie plugin for secure session management
+        nextCookies()
+    ] 
 });

@@ -22,6 +22,7 @@ bun dev
 ## Features
 
 - 🔐 **Authentication** - Email/password + Google OAuth with [Better Auth](https://www.better-auth.com/)
+- 👑 **Admin Dashboard** - User management with ban, role, and delete capabilities
 - 🗄️ **Database** - [Drizzle ORM](https://orm.drizzle.team/) with libsql/Turso support
 - 🎨 **UI Components** - [shadcn/ui](https://ui.shadcn.com/) with Tailwind CSS v4
 - 🌗 **Dark Mode** - Built-in light/dark theme support
@@ -108,6 +109,41 @@ To enable Google sign-in:
    ```
 
 Google sign-in buttons will now work on `/signin` and `/signup` pages!
+
+### Admin Setup
+
+To grant admin access to users:
+
+1. **Get User ID:**
+   - Sign up/sign in to your app
+   - Visit `/dashboard` and copy your user ID
+
+2. **Add to Environment Variables:**
+   
+   Add the user ID to `.env`:
+   
+   ```env
+   ADMIN_USER_IDS=user_id_here
+   # For multiple admins, comma-separate:
+   # ADMIN_USER_IDS=user_id_1,user_id_2,user_id_3
+   ```
+
+3. **Restart Server:**
+   
+   ```bash
+   bun dev
+   ```
+
+4. **Access Admin Dashboard:**
+   
+   Visit `/admin` or click "Admin Dashboard" button on your dashboard.
+
+**Admin Features:**
+- View all users with pagination
+- Change user roles (admin/user)
+- Ban/unban users
+- Delete user accounts
+- View user details and sessions
 
 ## Project Structure
 

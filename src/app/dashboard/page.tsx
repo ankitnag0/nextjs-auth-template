@@ -2,6 +2,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { LogoutButton } from "@/components/logout-button";
+import { isUserAdmin } from "@/lib/admin-check";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -32,6 +35,9 @@ export default async function DashboardPage() {
     redirect("/signin");
   }
 
+  // Check if user is admin
+  const isAdmin = isUserAdmin(session.user.id, session.user.role);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-6">
       <div className="w-full max-w-2xl space-y-6">
@@ -43,6 +49,13 @@ export default async function DashboardPage() {
           <p className="text-muted-foreground">
             You're now authenticated and viewing a protected page
           </p>
+          {isAdmin && (
+            <div className="flex justify-center">
+              <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                Admin User
+              </span>
+            </div>
+          )}
         </div>
 
         {/* User Information Card */}
@@ -111,8 +124,13 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Logout Button */}
-        <div className="flex justify-center">
+        {/* Actions */}
+        <div className="flex justify-center gap-3">
+          {isAdmin && (
+            <Button asChild variant="outline">
+              <Link href="/admin">Admin Dashboard</Link>
+            </Button>
+          )}
           <LogoutButton />
         </div>
       </div>

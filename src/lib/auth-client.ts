@@ -12,9 +12,13 @@
  */
 
 import { createAuthClient } from "better-auth/react"
+import { adminClient } from "better-auth/client/plugins"
 
 export const authClient = createAuthClient({
     // Base URL for API requests
     // In production, this can be omitted (defaults to current domain)
-    baseURL: "http://localhost:3000"
+    baseURL: "http://localhost:3000",
+    plugins: [
+        adminClient()
+    ]
 })

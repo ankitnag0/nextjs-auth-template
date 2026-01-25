@@ -352,31 +352,66 @@ export const auth = betterAuth({
 });
 ```
 
-### Add User Roles/Permissions
+### Using the Admin Dashboard
 
-1. **Add role to schema:**
+**The template includes a full admin dashboard powered by Better Auth's admin plugin.**
+
+**Setup:**
+
+1. Get your user ID from `/dashboard`
+2. Add to `.env`: `ADMIN_USER_IDS=your_user_id`
+3. Restart server
+4. Access `/admin`
+
+**Features:**
+- View all users in table format
+- Change user roles (admin/user)
+- Ban/unban users with reasons
+- Delete user accounts
+- Real-time updates with `router.refresh()`
+
+**Admin Actions:**
 
 ```typescript
-// src/db/schema/auth-schema.ts
-export const user = sqliteTable("user", {
-  // ... existing fields
-  role: text("role").default("user"), // Add this
+// Change role
+await authClient.admin.setRole({
+  userId: "user_id",
+  role: "admin"
+});
+
+// Ban user
+await authClient.admin.banUser({
+  userId: "user_id",
+  banReason: "Spam",
+  banExpiresIn: 60 * 60 * 24 * 7 // 7 days
+});
+
+// Unban user
+await authClient.admin.unbanUser({ userId: "user_id" });
+
+// Delete user
+await authClient.admin.removeUser({ userId: "user_id" });
+
+// List all users
+const { users, total } = await authClient.admin.listUsers({
+  limit: 100,
+  offset: 0
 });
 ```
 
-2. **Push schema:**
+**Extend Admin:**
 
-```bash
-bun db:generate
-bun db:push
-```
-
-3. **Check role in page:**
+Create custom admin pages in `src/app/admin/`:
 
 ```typescript
-const session = await auth.api.getSession({ headers: await headers() });
-if (session?.user.role !== "admin") {
-  redirect("/");
+// src/app/admin/analytics/page.tsx
+import { requireAdmin } from "@/lib/admin-check";
+
+export default async function AnalyticsPage() {
+  await requireAdmin(); // Protect the page
+  
+  // Your admin analytics code
+  return <div>Admin Analytics</div>;
 }
 ```
 
