@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Card,
   CardContent,
@@ -39,6 +40,10 @@ export default async function AdminUsersPage() {
 
   return (
     <div className="flex min-h-screen flex-col p-6">
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="mx-auto w-full max-w-7xl space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

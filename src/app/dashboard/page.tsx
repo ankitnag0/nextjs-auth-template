@@ -5,6 +5,7 @@ import { LogoutButton } from "@/components/logout-button";
 import { isUserAdmin } from "@/lib/admin-check";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Card,
   CardContent,
@@ -40,6 +41,10 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-6">
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-2xl space-y-6">
         {/* Welcome Header */}
         <div className="text-center space-y-2">
