@@ -102,7 +102,10 @@ export function SignupForm({
                 <Button 
                   variant="outline" 
                   type="button"
-                  onClick={() => authClient.signIn.social({ provider: "google" })}
+                  onClick={() => authClient.signIn.social({ 
+                    provider: "google",
+                    callbackURL: "/dashboard"
+                  })}
                 >
                   Sign up with Google
                 </Button>
