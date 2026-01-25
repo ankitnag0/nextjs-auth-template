@@ -21,6 +21,15 @@ import { authClient } from "@/lib/auth-client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
+/**
+ * Signup Form Component
+ * 
+ * Client component that handles user registration:
+ * - Uses Better Auth client SDK (authClient.signUp.email)
+ * - Creates user in database via /api/auth/sign-up/email
+ * - Automatically signs in user after successful registration
+ * - Redirects to /dashboard on success
+ */
 export function SignupForm({
   className,
   ...props
@@ -35,6 +44,8 @@ export function SignupForm({
     const password = formData.get("password") as string
     const name = formData.get("name") as string
 
+    // Call Better Auth client SDK
+    // This creates a new user and automatically signs them in
     const { error } = await authClient.signUp.email({
       email,
       password,
@@ -44,7 +55,8 @@ export function SignupForm({
     if (error) {
       setError(error.message || "Sign up failed")
     } else {
-      router.push("/")
+      // Redirect to protected dashboard after successful signup
+      router.push("/dashboard")
     }
   }
 

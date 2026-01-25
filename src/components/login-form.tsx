@@ -21,6 +21,15 @@ import { authClient } from "@/lib/auth-client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
+/**
+ * Login Form Component
+ * 
+ * Client component that handles user authentication:
+ * - Uses Better Auth client SDK (authClient.signIn.email)
+ * - Calls the API route at /api/auth/sign-in/email
+ * - Sets HTTP-only cookie for session management
+ * - Redirects to /dashboard on success
+ */
 export function LoginForm({
   className,
   ...props
@@ -34,6 +43,8 @@ export function LoginForm({
     const email = formData.get("email") as string
     const password = formData.get("password") as string
 
+    // Call Better Auth client SDK
+    // This makes a POST request to /api/auth/sign-in/email
     const { error } = await authClient.signIn.email({
       email,
       password,
@@ -42,7 +53,8 @@ export function LoginForm({
     if (error) {
       setError(error.message || "Sign in failed")
     } else {
-      router.push("/")
+      // Redirect to protected dashboard after successful login
+      router.push("/dashboard")
     }
   }
 

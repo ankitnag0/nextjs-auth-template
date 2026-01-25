@@ -1,6 +1,24 @@
+/**
+ * Authentication Database Schema
+ * 
+ * Defines all tables required by Better Auth for authentication:
+ * 
+ * 1. user - User accounts and profiles
+ * 2. session - Active login sessions (with expiry)
+ * 3. account - OAuth provider accounts (e.g., Google, GitHub)
+ * 4. verification - Email verification and password reset tokens
+ * 
+ * These schemas follow Better Auth's requirements and are used
+ * by the drizzleAdapter in src/lib/auth.ts
+ */
+
 import { relations, sql } from "drizzle-orm";
 import { sqliteTable, text, integer, index } from "drizzle-orm/sqlite-core";
 
+/**
+ * User Table
+ * Stores user account information
+ */
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
@@ -18,6 +36,10 @@ export const user = sqliteTable("user", {
     .notNull(),
 });
 
+/**
+ * Session Table
+ * Stores active user sessions with expiry and device info
+ */
 export const session = sqliteTable(
   "session",
   {
@@ -39,6 +61,11 @@ export const session = sqliteTable(
   (table) => [index("session_userId_idx").on(table.userId)],
 );
 
+/**
+ * Account Table
+ * Stores OAuth provider accounts (Google, GitHub, etc.)
+ * Also stores hashed passwords for email/password auth
+ */
 export const account = sqliteTable(
   "account",
   {
@@ -69,6 +96,10 @@ export const account = sqliteTable(
   (table) => [index("account_userId_idx").on(table.userId)],
 );
 
+/**
+ * Verification Table
+ * Stores temporary tokens for email verification and password resets
+ */
 export const verification = sqliteTable(
   "verification",
   {
@@ -87,6 +118,10 @@ export const verification = sqliteTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+/**
+ * Drizzle Relations
+ * Define relationships between tables for type-safe joins
+ */
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
