@@ -2,6 +2,8 @@
 
 Production-ready authentication template for Next.js applications with Better Auth, Drizzle ORM, and shadcn/ui components.
 
+📖 **[Read the Complete Usage Guide →](./USAGE.md)**
+
 ## ⚠️ Package Manager: Bun Only
 
 **This project uses [Bun](https://bun.sh) exclusively.** Do NOT use npm, yarn, or pnpm.
