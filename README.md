@@ -19,11 +19,11 @@ bun dev
 
 ## Features
 
-- 🔐 **Authentication** - Email/password auth with [Better Auth](https://www.better-auth.com/)
+- 🔐 **Authentication** - Email/password + Google OAuth with [Better Auth](https://www.better-auth.com/)
 - 🗄️ **Database** - [Drizzle ORM](https://orm.drizzle.team/) with libsql/Turso support
 - 🎨 **UI Components** - [shadcn/ui](https://ui.shadcn.com/) with Tailwind CSS v4
 - 🌗 **Dark Mode** - Built-in light/dark theme support
-- 🔒 **Protected Routes** - Session-based route protection
+- 🔒 **Protected Routes** - Next.js 16 proxy + server-side validation
 - 👁️ **Password Toggle** - Show/hide password functionality
 - ✨ **Type-Safe** - Full TypeScript support
 
@@ -73,6 +73,39 @@ bun db:push
 # Open Drizzle Studio (database GUI)
 bun db:studio
 ```
+
+### Google OAuth Setup (Optional)
+
+To enable Google sign-in:
+
+1. **Get Google OAuth Credentials:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+   - Create a new project or select existing
+   - Navigate to **APIs & Services** → **Credentials**
+   - Click **Create Credentials** → **OAuth client ID**
+   - Choose **Web application**
+   - Add authorized redirect URIs:
+     - `http://localhost:3000/api/auth/callback/google` (development)
+     - `https://yourdomain.com/api/auth/callback/google` (production)
+   - Copy **Client ID** and **Client Secret**
+
+2. **Add Environment Variables:**
+   
+   Create a `.env` file (see `.env.example`):
+   
+   ```env
+   BETTER_AUTH_URL=http://localhost:3000
+   GOOGLE_CLIENT_ID=your_client_id_here
+   GOOGLE_CLIENT_SECRET=your_client_secret_here
+   ```
+
+3. **Restart Development Server:**
+   
+   ```bash
+   bun dev
+   ```
+
+Google sign-in buttons will now work on `/signin` and `/signup` pages!
 
 ## Project Structure
 
@@ -191,12 +224,14 @@ bun db:studio    # Open Drizzle Studio
 
 ## Adding More Auth Providers
 
-The template is ready for additional providers. To add Google OAuth:
+Google OAuth is already configured! To add more providers (GitHub, Discord, etc.):
 
-1. Get OAuth credentials from [Google Cloud Console](https://console.cloud.google.com/)
-2. Update `src/lib/auth.ts` with Google provider config
-3. Add environment variables
-4. Update login/signup forms with Google button
+1. Get OAuth credentials from the provider
+2. Add provider config to `src/lib/auth.ts` socialProviders
+3. Add environment variables to `.env`
+4. Update login/signup forms with new provider buttons
+
+See [Better Auth Providers](https://www.better-auth.com/docs/authentication/social) for all options.
 
 ## Customization
 

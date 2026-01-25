@@ -99,7 +99,11 @@ export function SignupForm({
               {error && <p className="text-sm text-red-500">{error}</p>}
               <Field>
                 <Button type="submit">Sign up</Button>
-                <Button variant="outline" type="button">
+                <Button 
+                  variant="outline" 
+                  type="button"
+                  onClick={() => authClient.signIn.social({ provider: "google" })}
+                >
                   Sign up with Google
                 </Button>
                 <FieldDescription className="text-center">
