@@ -53,3 +53,4 @@ next-env.d.ts
 # database
 *.db
 local.db
+.template-setup-complete
