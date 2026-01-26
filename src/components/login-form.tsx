@@ -20,6 +20,7 @@ import { PasswordInput } from "@/components/ui/password-input"
 import { authClient } from "@/lib/auth-client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 /**
  * Login Form Component
@@ -52,7 +53,9 @@ export function LoginForm({
 
     if (error) {
       setError(error.message || "Sign in failed")
+      toast.error(error.message || "Sign in failed")
     } else {
+      toast.success("Signed in successfully!")
       // Redirect to protected dashboard after successful login
       router.push("/dashboard")
     }

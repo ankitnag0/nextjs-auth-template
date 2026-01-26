@@ -20,6 +20,7 @@ import { PasswordInput } from "@/components/ui/password-input"
 import { authClient } from "@/lib/auth-client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 /**
  * Signup Form Component
@@ -54,7 +55,9 @@ export function SignupForm({
 
     if (error) {
       setError(error.message || "Sign up failed")
+      toast.error(error.message || "Sign up failed")
     } else {
+      toast.success("Account created successfully!")
       // Redirect to protected dashboard after successful signup
       router.push("/dashboard")
     }

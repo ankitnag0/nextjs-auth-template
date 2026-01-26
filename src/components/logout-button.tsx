@@ -3,6 +3,7 @@
 import { authClient } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 /**
  * Logout Button Component
@@ -19,6 +20,7 @@ export function LogoutButton() {
     // Call Better Auth to clear session
     // This removes the session from database and clears the cookie
     await authClient.signOut()
+    toast.success("Logged out successfully")
     router.push("/signin")
   }
 
